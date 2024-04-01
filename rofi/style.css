@@ -1,0 +1,47 @@
+#input {
+	margin: 5px; /* how much padding there is around the input box */
+	border: none; /* border around the input box */
+	background-color: #942532; /* background color of the text input box itself */
+        color: #ffffff; /* text color as you type inside the input box */
+  border-radius:5px;
+}
+
+#inner-box {
+	margin: 1px;
+	border: none; /* horizontal bar that appears above the search results */
+	background-color: #ed4c5f; /* background color behind the search results */
+  color: #ffffff; /* text color of each search result */
+ 
+}
+
+#outer-box {
+	padding: 10px; /* margin between the outer edges of the main window and its contents inside */
+	border: none /* border around all the internal window components */
+	background-color: #ed4c5f ; /* background color of entire inner window */
+  border-radius:15px;
+}
+
+#text {
+	/*margin: 5px; */
+	border: none; /* border around each individual item within the search results */
+	background-color: #EC407AF2; /* background behind each individual item within the search results */
+        color: #ffffff;
+}
+
+/* Remove the search icon */
+#input > image.left {
+        -gtk-icon-transform:scaleX(0);
+}
+
+#scroll {
+/*	margin: 5px; */
+/*	border: 2px solid #1f1f1f; */
+	/*background-color: #1f1f1f; /* background color behind the search slider */
+}
+
+window {
+	margin: 10px;
+	border: 3px solid #6e086a; /* border around the entire window */
+	background-color: 	#f57f8d;
+	border-radius:15px;
+}

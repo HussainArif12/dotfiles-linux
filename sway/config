@@ -1,0 +1,251 @@
+# Ansible managed message here
+
+#==================================================================================#
+# Sway Window Manager Configuration File                                           #
+#----------------------------------------------------------------------------------#
+# Purpose: This configuration file enables you to tweak keyboard shortcuts, adjust #
+# themes and colors, set the wallpaper, and more.r#
+#                                                                                  #
+# License: Creative Commons Attribution 4.0 International                          #
+#                                                                                  #
+# Pro-tip: While using Sway, you can trigger this configuration to be re-read by   #
+# pressing Super + Shift + C.                                                      #
+#==================================================================================#
+
+
+#========================#
+# Appearance and Theming #
+#========================#
+# Declare Colors:
+set $background #332b2b
+set $color_urgent #fb4934
+set $text_color #ffffff
+set $title_bg_unfocused #666666
+set $title_outline_active #AA336A
+set $title_outline_unfocused #ffb6c1
+
+# Set Colors:           Border                   Background          Text          Indicator             Child Border
+client.background       $background
+client.focused          $title_outline_active    $background         $text_color   $title_outline_active $title_outline_active
+client.focused_inactive $title_outline_unfocused $background         $text_color   $text_color           $title_outline_unfocused
+client.unfocused        $title_outline_unfocused $title_bg_unfocused $text_color   $title_outline_active
+client.urgent           $color_urgent            $color_urgent       $color_urgent $color_urgent         $color_urgent
+
+# Add gaps in between all application windows:
+gaps inner 0
+gaps outer 0
+
+# Configure the default border:
+default_border pixel 0
+
+# Set the Wallpaper:
+
+#====================================#
+# Activate the panel                 #
+#====================================#
+# Set the waybar command for the application launcher:
+bar {
+    swaybar_command waybar
+    
+}
+
+input 2:7:SynPS/2_Synaptics_TouchPad {
+	tap enabled
+   	natural_scroll enabled
+   	dwt enabled
+}
+exec blueman-applet
+exec nm-applet
+#====================================#
+# Keyboard Shortcuts (Sway-specific) #
+#====================================#
+# Set the modifier key to super:
+set $mod Mod4
+
+# Set the ALT key to $alt (since Mod1 is harder to remember):
+set $alt Mod1
+
+# Set up a shortcut to reload this config file:
+bindsym $mod+Shift+c reload
+
+# Quit your current session and return to the log-in manager/tty:
+bindsym $mod+Shift+e exec $HOME/.config/sway/exit.sh
+
+exec powerprofilesctl set  power-saver
+output * bg $HOME/.config/sway/twiceWallpaper fill 
+
+# Screen locking (automatic, with a timeout)
+set $lock swaylock -i $HOME/.config/sway/twiceWallpaper 
+exec swayidle -w \
+    timeout 300 'swaylock -i $HOME/.config/sway/twiceWallpaper ' \
+    timeout 314 'swaymsg "output * dpms off"' \
+        resume  'swaymsg "output * dpms on"'  \
+    timeout 626 'systemctl suspend ' \
+    before-sleep 'swaylock -i $HOME/.config/sway/twiceWallpaper'
+
+# Screen locking (manual)
+set $lock_screen exec bash ~/.config/sway/lock_screen.sh
+bindsym $mod+Escape exec $lock_screen
+bindswitch --reload --locked lid:on exec $lock_screen
+
+#========================================#
+# Keyboard Shortcuts (Window Management) #
+#========================================#
+# Move focus to another window:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+
+# Move the window:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+
+# Hold the modifier key and hold the left/right mouse button
+# to drag or resize a window respectively. This isn't exclusive
+# to floating windows:
+floating_modifier $mod normal
+
+# Resizing containers:
+mode "resize" {
+    # Resize windows with arrow keys:
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+
+#=================================#
+# Keyboard Shortcuts (Workspaces) #
+#=================================#
+# Switch to workspace
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+
+# Move between workspaces
+bindsym Ctrl+$alt+1 workspace $ws1
+bindsym Ctrl+$alt+2 workspace $ws2
+bindsym Ctrl+$alt+3 workspace $ws3
+bindsym Ctrl+$alt+4 workspace $ws4
+bindsym Ctrl+$alt+5 workspace $ws5
+bindsym Ctrl+$alt+Left workspace next
+bindsym Ctrl+$alt+Right workspace prev
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+
+#=============================#
+# Keyboard Shortcuts (Layout) #
+#=============================#
+# You can "split" the current object of your focus with
+# $mod+b or $mod+v, for horizontal and vertical splits
+# respectively.
+bindsym $mod+h splith
+bindsym $mod+v splitv
+
+# Switch the current container between different layout styles
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+
+# Make the current focus fullscreen
+bindsym $mod+f fullscreen
+
+# Toggle the current focus between tiling and floating mode
+bindsym $mod+Shift+f floating toggle
+
+# Swap focus between the tiling area and the floating area
+bindsym $mod+tab focus mode_toggle
+
+# Move focus to the parent container
+bindsym $mod+a focus parent
+
+
+#=================================#
+# Keyboard Shortcuts (Scratchpad) #
+#=================================#
+# Sway has a "scratchpad", which is a bag of holding for windows.
+# You can send windows there and get them back later.
+
+# Move the currently focused window to the scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+minus scratchpad show
+
+
+#===============================#
+# Keyboard Shortcuts (Hardware) #
+#===============================#
+# Audio
+bindsym XF86AudioRaiseVolume exec "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+; pkill -RTMIN+8 waybar"
+bindsym XF86AudioLowerVolume exec "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; pkill -RTMIN+8 waybar"
+bindsym XF86AudioMute exec "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; pkill -RTMIN+8 waybar"
+
+# Brightness
+bindsym XF86MonBrightnessDown exec brightnessctl s 100-
+bindsym XF86MonBrightnessUp exec brightnessctl s +100
+
+
+#=============================================#
+# Keyboard Shortcuts (launching applications) #
+#=============================================#
+# Set up wofi to replace dmenu as the launcher of choice:
+set $menu 'pgrep -x rofi >/dev/null 2>&1 && killall rofi || rofi --dmenu -show drun'
+
+# Launch your browser:
+bindsym $mod+shift+b exec firefox
+
+# Open a file manager:
+bindsym $mod+e exec natilus
+
+# Open a terminal emulator:
+set $term foot
+bindsym Ctrl+$alt+t exec $term
+
+# Kill focused window:
+bindsym $alt+f4 kill
+
+# Open the application launcher:
+bindsym $mod+space exec $menu
+
+
+for_window [app_id="pavucontrol"] {
+    floating enable
+    move position center
+}
+
+for_window [app_id="pavucontrol-qt"] {
+    floating enable
+    move position center
+}
+
+#======#
+# Misc #
+#======#
+include /etc/sway/config-vars.d/*
+include /etc/sway/config.d/*
